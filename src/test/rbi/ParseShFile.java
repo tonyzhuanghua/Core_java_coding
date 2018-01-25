@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class ParseShFIle {
+public class ParseShFile {
     private static Map<String, String> shmap = new HashMap<>(); // define a hashmap to save the variables, "key" is variable's name (left to "="), "value" is the value (on the right to "=")
 
 
@@ -43,7 +43,8 @@ public class ParseShFIle {
                 while (matcher.find()) {
                     String replaceFrom = matcher.group();
                     String replaceTo = shmap.get(replaceFrom.substring(1, replaceFrom.length()));
-                    value = value.replace(replaceFrom, replaceTo);
+                    if (replaceTo != null && !replaceTo.isEmpty())
+                        value = value.replace(replaceFrom, replaceTo);
                 }
 
                 shmap.put(key, value);
@@ -61,7 +62,7 @@ public class ParseShFIle {
         // to be noted, this sh file is located relative path to project classpath, if move it to same folder with this java file, it should be changed to "src/test/rbi/script.sh"
         final String filename = "script.sh";
 
-        ParseShFIle.readFile(filename);
+        ParseShFile.readFile(filename);
 
         String classPath = shmap.get("CLASSPATH");
 
